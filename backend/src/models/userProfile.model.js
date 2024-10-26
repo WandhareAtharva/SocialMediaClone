@@ -27,4 +27,15 @@ const userProfileSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
+userProfileSchema.index({ userId: 1 }, { unique: true });
+
+userProfileSchema.methods.toJSON = function () {
+    const userProfile = this;
+    const userProfileObject = userProfile.toObject();
+
+    delete userProfileObject.__v;
+
+    return userProfileObject;
+}
+
 export default mongoose.model("UserProfile", userProfileSchema);

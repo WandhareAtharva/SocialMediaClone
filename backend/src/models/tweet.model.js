@@ -43,6 +43,8 @@ const tweetSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
+tweetSchema.index({ user: 1, inReplyToTweetId: 1 });
+
 tweetSchema.pre("save", async function (next) {
     if (!this.isModified("text")) {
         next();

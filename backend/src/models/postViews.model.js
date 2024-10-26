@@ -19,4 +19,13 @@ const postViewsSchema = new mongoose.Schema({
 
 postViewsSchema.index({ userId: 1, postId: 1 }, { unique: true });
 
+postViewsSchema.methods.toJSON = function () {
+    const postView = this;
+    const postViewObject = postView.toObject();
+
+    delete postViewObject.__v;
+
+    return postViewObject;
+}
+
 export default mongoose.model("PostViews", postViewsSchema);

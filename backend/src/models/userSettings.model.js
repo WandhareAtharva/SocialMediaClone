@@ -23,4 +23,15 @@ const userSettingsSchema = new mongoose.Schema({
     },
 }, { timestamps: true });
 
+userSettingsSchema.index({ userId: 1 }, { unique: true });
+
+userSettingsSchema.methods.toJSON = function () {
+    const userSettings = this;
+    const userSettingsObject = userSettings.toObject();
+
+    delete userSettingsObject.__v;
+
+    return userSettingsObject;
+}
+
 export default mongoose.model("UserSettings", userSettingsSchema);
