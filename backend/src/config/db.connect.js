@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
-import {DB_NAME} from './config/keys.js';
+import {DB_NAME} from './keys.js';
 
-const connecDB = async () => {
+const connectDB = async () => {
     try {
-        const conn = await mongoose.connect(`${process.env.MONGO_URI}/${DB_NAME}`);
+        // console.log('Connecting to MongoDB Servers...\nMONGODB_URI:', process.env.MONGODB_URI);
+        const conn = await mongoose.connect(`${process.env.MONGODB_URI}/${DB_NAME}`);
         console.log(`MongoDB Successfully connected: ${conn.connection.host}`);
     } catch (error) {
         console.error(`Error while connecting to MongoDB Servers:\n\t ${error.message}`);
@@ -11,4 +12,4 @@ const connecDB = async () => {
     }
 }
 
-export default connecDB;
+export default connectDB;
