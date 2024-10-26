@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { Media } from './media.model.js';
 
 const userSchema = new mongoose.Schema(
     {
@@ -11,9 +10,14 @@ const userSchema = new mongoose.Schema(
             trim: true,
             unique: true,
             minlength: 3,
-            maxlength: 20,
+            maxlength: 45,
             index: true,
             lowercase: true,
+        },
+        fullName: {
+            type: String,
+            trim: true,
+            index: true,
         },
         email: {
             type: String,
@@ -23,45 +27,21 @@ const userSchema = new mongoose.Schema(
             lowercase: true,
             index: true,
         },
-        fullName: {
-            type: String,
-            trim: true,
-            required: true,
-            index: true,
-        },
-        avatar: {
-            type: String,
-            required: true,
-        },
-        likedMedia: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Media',
-            },
-        ],
-        savedMedia: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Media',
-            },
-        ],
-        followers: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'User',
-            },
-        ],
-        following: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'User',
-            },
-        ],
         password: {
             type: String,
             required: true,
             trim: true,
             minlength: 8,
+        },
+        lastLogin: {
+            type: Date
+        },
+        active: {
+            type: Boolean,
+            default: true,
+        },
+        avatar: {
+            type: String
         },
         refreshToken: {
             type: String,
@@ -80,6 +60,11 @@ userSchema.pre('save', async function (next) {
     this.password = await bcrypt.hash(this.password, salt);
     next();
 });
+
+userSchema.methods.lastLoginUpdate = async function () {
+    this.lastLogin = Date.now();
+    await this.save();
+}
 
 userSchema.methods.isPasswordCorrect = async function (password) {
     try {
