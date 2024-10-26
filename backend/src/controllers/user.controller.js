@@ -22,6 +22,17 @@ const userController = {
         }
     },
 
+    getAllUsers: asyncHandler(async (req, res) => {
+        const users = await User.find();
+        if (!users) {
+            throw new ApiError(404, "No users found!!!");
+        }
+
+        const response = res.status(200).json(new ApiResponse(200, users, "All users fetched successfully"));
+        console.log('All users fetched successfully!!!');
+        return response;
+    }),
+
     // Register a new user
     register: asyncHandler(async (req, res) => {
         const { username, email, password } = req.body;
