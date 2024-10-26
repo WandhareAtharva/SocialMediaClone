@@ -40,7 +40,7 @@ const userSchema = new mongoose.Schema(
             type: Boolean,
             default: true,
         },
-        avatar: {
+        profilePicture: {
             type: String
         },
         refreshToken: {
