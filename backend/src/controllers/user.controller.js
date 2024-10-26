@@ -1,30 +1,31 @@
-import { asyncHandler } from "../utils/asyncHander";
+import { asyncHandler } from "../utils/asyncHandler.js";
 import jwt from "jsonwebtoken";
-import User from "../models/user.model";
-import { ApiError } from "../utils/ApiError";
-import ApiResponse from "../utils/ApiResponse";
+import { User } from "../models/user.model.js";
+import { ApiError } from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
 
 const userController = {
 
     generateAuthandRefreshToken: async (userId) => {
         try {
-            const user = await findById(userId);
+            const user = await User.findById(userId);
             const AuthToken = user.generateAuthToken();
             const RefreshToken = user.generateRefreshToken();
+            console.log(`AuthToken: ${AuthToken}\nRefreshToken: ${RefreshToken}`);
 
             user.refreshToken = RefreshToken;
             await user.save();
 
             return { AuthToken, RefreshToken };
         } catch (error) {
-            throw new ApiError(500, "Error generating tokens");
+            throw new Error(error);
         }
     },
 
     // Register a new user
     register: asyncHandler(async (req, res) => {
         const { username, email, password } = req.body;
-        console.log(`username: ${username}\nemail: ${email}\npassword: ${password}`);
+        // console.log(`username: ${username}\nemail: ${email}\npassword: ${password}`);
 
         if ([username, email, password].includes('')) {
             throw new ApiError(400, "All fields are required");
@@ -47,7 +48,7 @@ const userController = {
 
         // Send response
         const response = res.status(200).json(new ApiResponse(200, createdUser, "User created successfully"));
-        console.log('User created successfully: ', response);
+        console.log('User Registered successfully!!');
         return response;
     }),
 
@@ -76,51 +77,85 @@ const userController = {
         const { AuthToken, RefreshToken } = await userController.generateAuthandRefreshToken(user._id);
         const LoggedInUser = await User.findById(user._id).select("-password -refreshToken");
 
+        const options = {
+            httpOnly: true,
+            secure: true,
+        }
+
         // Send response
-        const response = res.status(200).json(
-            new ApiResponse(
-                200,
-                {
-                    AuthToken,
-                    RefreshToken,
-                    LoggedInUser
-                },
-                "User logged in successfully"
+        const response = res
+            .status(200)
+            .cookie('AuthToken', AuthToken, options)
+            .cookie('RefreshToken', RefreshToken, options)
+            .json(
+                new ApiResponse(
+                    200,
+                    {
+                        user: LoggedInUser,
+                        AuthToken,
+                        RefreshToken
+                    },
+                    "User logged in successfully"
+                )
             )
+
+        console.log('User logged in successfully!!!');
+        return response;
+    }),
+
+    // Logout user
+    logout: asyncHandler(async (req, res) => {
+        await User.findByIdAndUpdate(
+            req.user._id,
+            {
+                $unset: { refreshToken: 1 }
+            },
+            { new: true }
         )
 
-        console.log('User logged in successfully: ', response);
+        const options = {
+            httpOnly: true,
+            secure: true
+        }
+
+        const response = res
+            .status(200)
+            .clearCookie('AuthToken', options)
+            .clearCookie('RefreshToken', options)
+            .json(new ApiResponse(200, {}, "User logged out successfully"));
+
+        console.log('User logged out successfully!!!');
         return response;
     }),
 
     // Get user profile
     getProfile: asyncHandler(async (req, res) => {
-        
+
     }),
 
     // Update user profile
     updateProfile: asyncHandler(async (req, res) => {
-        
+
     }),
 
     // Get all users
     getUsers: asyncHandler(async (req, res) => {
-        
+
     }),
 
     // Delete user
     deleteUser: asyncHandler(async (req, res) => {
-        
+
     }),
 
     // Get user by ID
     getUserById: asyncHandler(async (req, res) => {
-        
+
     }),
 
     // Update user
     updateUser: asyncHandler(async (req, res) => {
-        
+
     }),
 
 };
