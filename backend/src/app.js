@@ -24,5 +24,6 @@ import messageRoutes from './routes/message.routes.js';
 import conversationRoutes from './routes/conversation.routes.js';
 
 // User routes
+app.use('/api/v1/users', userRoutes);
 
 export default app;
