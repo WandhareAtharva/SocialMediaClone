@@ -8,6 +8,7 @@ router.route('/register').post(userController.register);
 router.route('/login').post(userController.login);
 
 // Secure Routes
+router.route('/get-users').get(verifyJWT, userController.getAllUsers);
 router.route('/logout').post(verifyJWT, userController.logout);
 
 export default router;
