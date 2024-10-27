@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const userSettingsSchema = new mongoose.Schema({
-    userId: {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true,
@@ -17,7 +17,7 @@ const userSettingsSchema = new mongoose.Schema({
         enum: ["english", "spanish"],
         default: "english",
     },
-    coutnry: {
+    country: {
         type: String,
         default: "india",
     },

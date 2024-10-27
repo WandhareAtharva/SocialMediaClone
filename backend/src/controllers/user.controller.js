@@ -2,6 +2,9 @@ console.log('Loaded: user.controller.js File');
 import { asyncHandler } from "../utils/asyncHandler.js";
 import jwt from "jsonwebtoken";
 import { User } from "../models/user.model.js";
+import { UserProfile } from "../models/userProfile.model.js";
+import userNotifications from "../models/userNotifications.model.js";
+import userSettings from "../models/userSettings.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { uploadOnCloudinary, deleteFromCloudinary } from "../utils/cloudinary.js";
@@ -58,6 +61,11 @@ const userController = {
         if (!createdUser) {
             throw new ApiError(500, "Something went wrong while creating user!!!");
         }
+
+        // Create Empty User Profile
+        await UserProfile.create({ user: createdUser });
+        await userNotifications.create({ user: createdUser });
+        await userSettings.create({ user: createdUser });
 
         // Send response
         const response = res.status(200).json(new ApiResponse(200, createdUser, "User created successfully"));
@@ -188,7 +196,7 @@ const userController = {
             throw new ApiError(404, "User not found!!!");
         }
 
-        await user.remove();
+        await User.findOneAndDelete({ _id: req.user._id });
         const response = res.status(200).json(new ApiResponse(200, {}, "User deleted successfully"));
         console.log('User deleted successfully!!!');
         return response;

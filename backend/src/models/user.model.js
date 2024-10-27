@@ -118,4 +118,16 @@ userSchema.methods.generateRefreshToken = function () {
     }
 };
 
+userSchema.pre('findOneAndDelete', async function (next) {
+    const userId = this.getQuery()["_id"];
+    try {
+        await mongoose.model('UserProfile').findOneAndDelete({ user: userId });
+        await mongoose.model('UserNotifications').findOneAndDelete({ user: userId });
+        await mongoose.model('UserSettings').findOneAndDelete({ user: userId });
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+})
+
 export const User = mongoose.model('User', userSchema);

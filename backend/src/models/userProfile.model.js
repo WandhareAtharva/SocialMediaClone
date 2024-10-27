@@ -29,6 +29,10 @@ const userProfileSchema = new mongoose.Schema({
     },
     birthday: {
         type: Date,
+    },
+    gender: {
+        type: String,
+        enum: ['male', 'female', 'other'],
     }
 }, { timestamps: true });
 
@@ -43,4 +47,4 @@ userProfileSchema.methods.toJSON = function () {
     return userProfileObject;
 }
 
-export default mongoose.model("UserProfile", userProfileSchema);
+export const UserProfile = mongoose.model("UserProfile", userProfileSchema);

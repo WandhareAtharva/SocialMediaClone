@@ -9,26 +9,10 @@ import { uploadOnCloudinary, deleteFromCloudinary } from "../utils/cloudinary.js
 
 const userProfileController = {
 
-    createUserProfile: asyncHandler(async (req, res) => {
+    updateUserProfile: asyncHandler(async (req, res) => {
         const {fullName, description, location, website, birthday } = req.body;
         if ([fullName, description, location, website, birthday].includes("")) {
             return next(new ApiError(400, "All fields are required"));
-        }
-
-        // Create User Profile
-        const userProfile = await UserProfile.create({
-            user: req.user._id,
-            fullName,
-            description,
-            location,
-            website,
-            birthday,
-        });
-
-        // check if user profile was created
-        const createdUserProfile = await UserProfile.findById(userProfile._id);
-        if (!createdUserProfile) {
-            throw new ApiError(500, "Something went wrong while creating User Profile. User Profile not created.");
         }
 
         const response = res.status(201).json(new ApiResponse(201, createdUserProfile, "User Profile Created"));
