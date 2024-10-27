@@ -19,6 +19,26 @@ const userNotificationsSchema = new mongoose.Schema({
         type: Boolean,
         default: true,
     },
+    totalNotifications: {
+        type: Number,
+        default: 0,
+    },
+    notifications: [
+        {
+            message: {
+                type: String,
+                required: true,
+            },
+            read: {
+                type: Boolean,
+                default: false,
+            },
+            link: {
+                type: String,
+                required: true,
+            },
+        },
+    ],
 }, { timestamps: true });
 
 userNotificationsSchema.index({ userId: 1 }, { unique: true });
