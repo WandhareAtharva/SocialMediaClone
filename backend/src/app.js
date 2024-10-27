@@ -17,6 +17,7 @@ app.use(cookieParser());
 
 // Routes
 import userRoutes from './routes/user.routes.js';
+import userProfileRoutes from './routes/userProfile.routes.js';
 // import postRoutes from './routes/post.routes.js';
 // import commentRoutes from './routes/comment.routes.js';
 // import likeRoutes from './routes/like.routes.js';
@@ -27,5 +28,6 @@ import userRoutes from './routes/user.routes.js';
 
 // User routes
 app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/userProfile', userProfileRoutes);
 
 export default app;
