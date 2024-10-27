@@ -11,6 +11,7 @@
         "rangav.vscode-thunder-client",
         "GitHub.copilot",
         "GitHub.copilot-chat",
+        "c0der-himel.vscode-wev-dev-extension-pack",
     ],
     "postCreateCommand": "npm install",
     "forwardPorts": [3000],
