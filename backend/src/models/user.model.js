@@ -41,7 +41,8 @@ const userSchema = new mongoose.Schema(
             default: false,
         },
         profilePicture: {
-            type: String
+            type: String,
+            default: ""
         },
         refreshToken: {
             type: String,
@@ -75,6 +76,11 @@ userSchema.methods.StatusUpdate = async function (status) {
 
 userSchema.methods.setProfilePicture = async function (profilePicture) {
     this.profilePicture = profilePicture;
+    await this.save();
+}
+
+userSchema.methods.removeProfilePicture = async function () {
+    this.profilePicture = "";
     await this.save();
 }
 
