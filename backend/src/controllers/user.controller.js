@@ -109,6 +109,8 @@ const userController = {
                     "User logged in successfully"
                 )
             )
+        user.lastLoginUpdate();
+        user.StatusUpdate(true);
 
         console.log('User logged in successfully!!!');
         return response;
@@ -116,6 +118,7 @@ const userController = {
 
     // Logout user
     logout: asyncHandler(async (req, res) => {
+        const user = await User.findById(req.user._id);
         await User.findByIdAndUpdate(
             req.user._id,
             {
@@ -135,6 +138,7 @@ const userController = {
             .clearCookie('RefreshToken', options)
             .json(new ApiResponse(200, {}, "User logged out successfully"));
 
+        user.StatusUpdate(false);
         console.log('User logged out successfully!!!');
         return response;
     }),
@@ -222,6 +226,27 @@ const userController = {
         const response = res.status(200).json(new ApiResponse(200, {}, "Password changed successfully"));
         console.log('Password changed successfully!!!');
         return response;
+    }),
+
+    // Change User Profile Picture
+    changeProfilePicture: asyncHandler(async (req, res) => {
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            throw new ApiError(404, "User not found!!!");
+        }
+
+        const { profilePicture } = req.body;
+        if (!profilePicture) {
+            throw new ApiError(400, "Profile Picture is required");
+        }
+
+        user.setProfilePicture(profilePicture);
+        const updatedUser = await User.findById(user._id).select("-password -refreshToken");
+
+        const response = res.status(200).json(new ApiResponse(200, updatedUser, "Profile Picture changed successfully"));
+        console.log('Profile Picture changed successfully!!!');
+        return response;
+
     }),
 
     // Refresh Token
