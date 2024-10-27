@@ -16,9 +16,9 @@ router.route('/get-user').get(verifyJWT, userController.getProfile);
 router.route('/update-user-profile').put(verifyJWT, userController.updateProfile);
 router.route('/delete-user').delete(verifyJWT, userController.deleteUser);
 router.route('/get-user-by-id/:id').get(verifyJWT, userController.getUserById);
-router.route('/change-password').put(verifyJWT, userController.changePassword);
+router.route('/change-password').patch(verifyJWT, userController.changePassword);
 router.route('/profile-picture')
-    .put(verifyJWT, upload.single('profilePicture'), userController.changeProfilePicture)
+    .patch(verifyJWT, upload.single('profilePicture'), userController.changeProfilePicture)
     .delete(verifyJWT, userController.removeProfilePicture);
 router.route('/refresh-token').post(userController.refreshAuthToken);
 
