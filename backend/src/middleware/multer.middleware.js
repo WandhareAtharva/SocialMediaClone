@@ -1,3 +1,4 @@
+console.log('Loaded: multer.middleware.js File');
 import multer from 'multer';
 import path from 'path';
 

@@ -1,3 +1,4 @@
+console.log('Loaded: db.connect.js File');
 import mongoose from 'mongoose';
 import {DB_NAME} from './keys.js';
 

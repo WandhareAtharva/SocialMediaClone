@@ -1,8 +1,9 @@
+console.log('Loaded: index.js File');
 import dotenv from 'dotenv';
+dotenv.config({ path: './src/.env' });
+
 import app from './app.js';
 import connectDB from './config/db.connect.js';
-
-dotenv.config({ path: './src/.env' });
 
 const PORT = process.env.PORT || 8000;
 

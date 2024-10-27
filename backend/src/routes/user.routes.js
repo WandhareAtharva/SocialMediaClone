@@ -1,3 +1,4 @@
+console.log('Loaded: user.routes.js File');
 import { Router } from 'express';
 import userController from '../controllers/user.controller.js';
 import { verifyJWT } from '../middleware/auth.middleware.js';
