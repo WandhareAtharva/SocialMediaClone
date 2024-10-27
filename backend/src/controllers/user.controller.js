@@ -14,7 +14,7 @@ const userController = {
             console.log(`AuthToken: ${AuthToken}\nRefreshToken: ${RefreshToken}`);
 
             user.refreshToken = RefreshToken;
-            await user.save();
+            await user.save({ validateBeforeSave: false });
 
             return { AuthToken, RefreshToken };
         } catch (error) {
@@ -141,33 +141,137 @@ const userController = {
 
     // Get user profile
     getProfile: asyncHandler(async (req, res) => {
+        const user = await User.findById(req.user._id).select("-password -refreshToken");
+        if (!user) {
+            throw new ApiError(404, "User not found!!!");
+        }
 
+        const response = res.status(200).json(new ApiResponse(200, user, "User profile fetched successfully"));
+        console.log('User profile fetched successfully!!!');
+        return response;
     }),
 
     // Update user profile
     updateProfile: asyncHandler(async (req, res) => {
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            throw new ApiError(404, "User not found!!!");
+        }
 
-    }),
+        const { username, email, password } = req.body;
+        if ([username, email, password].includes('')) {
+            throw new ApiError(400, "All fields are required");
+        }
 
-    // Get all users
-    getUsers: asyncHandler(async (req, res) => {
+        user.username = username || user.username;
+        user.email = email || user.email;
+        user.password = password || user.password;
 
+        await user.save();
+        const updatedUser = await User.findById(user._id).select("-password -refreshToken");
+
+        const response = res.status(200).json(new ApiResponse(200, updatedUser, "User profile updated successfully"));
+        console.log('User profile updated successfully!!!');
+        return response;
     }),
 
     // Delete user
     deleteUser: asyncHandler(async (req, res) => {
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            throw new ApiError(404, "User not found!!!");
+        }
 
+        await user.remove();
+        const response = res.status(200).json(new ApiResponse(200, {}, "User deleted successfully"));
+        console.log('User deleted successfully!!!');
+        return response;
     }),
 
     // Get user by ID
     getUserById: asyncHandler(async (req, res) => {
+        const user = await User.findById(req.params.id).select("-password -refreshToken");
+        if (!user) {
+            throw new ApiError(404, "User not found!!!");
+        }
 
+        const response = res.status(200).json(new ApiResponse(200, user, "User fetched successfully"));
+        console.log('User fetched successfully!!!');
+        return response;
     }),
 
-    // Update user
-    updateUser: asyncHandler(async (req, res) => {
+    changePassword: asyncHandler(async (req, res) => {
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            throw new ApiError(404, "User not found!!!");
+        }
 
+        const { oldPassword, newPassword } = req.body;
+        if ([oldPassword, newPassword].includes('')) {
+            throw new ApiError(400, "All fields are required");
+        }
+
+        const isMatch = await user.isPasswordCorrect(oldPassword);
+        if (!isMatch) {
+            throw new ApiError(400, "Invalid Old Password!!!");
+        }
+
+        user.password = newPassword;
+        await user.save();
+
+        const response = res.status(200).json(new ApiResponse(200, {}, "Password changed successfully"));
+        console.log('Password changed successfully!!!');
+        return response;
     }),
+
+    // Refresh Token
+    refreshAuthToken: asyncHandler(async (req, res) => {
+        const incomingRefreshToken = req.cookies.RefreshToken || req.body.RefreshToken;
+        if (!incomingRefreshToken) {
+            throw new ApiError(401, "Unauthorized Request");
+        }
+
+        try {
+            const decoded = jwt.verify(incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET);
+            const user = await User.findById(decoded._id);
+            if (!user) {
+                throw new ApiError(404, "User not found!!! Invalid Refresh Token");
+            }
+
+            if (incomingRefreshToken !== user?.refreshToken) {
+                throw new ApiError(401, "Refresh Token is expired or Used!");
+            }
+
+            const { newAuthToken, newRefreshToken } = await userController.generateAuthandRefreshToken(user._id);
+            const LoggedInUser = await User.findById(user._id).select("-password -refreshToken");
+
+            const options = {
+                httpOnly: true,
+                secure: true
+            }
+
+            const response = res
+                .status(200)
+                .cookie('AuthToken', newAuthToken, options)
+                .cookie('RefreshToken', newRefreshToken, options)
+                .json(
+                    new ApiResponse(
+                        200,
+                        {
+                            user: LoggedInUser,
+                            AuthToken: newAuthToken,
+                            RefreshToken: newRefreshToken
+                        },
+                        "Token refreshed successfully"
+                    )
+                );
+
+            console.log('Token refreshed successfully!!!');
+            return response;
+        } catch (error) {
+            throw new ApiError(401, error?.message || "Something went wrong while refreshing token!!!");
+        }
+    })
 
 };
 
