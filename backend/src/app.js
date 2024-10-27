@@ -18,13 +18,6 @@ app.use(cookieParser());
 // Routes
 import userRoutes from './routes/user.routes.js';
 import userProfileRoutes from './routes/userProfile.routes.js';
-// import postRoutes from './routes/post.routes.js';
-// import commentRoutes from './routes/comment.routes.js';
-// import likeRoutes from './routes/like.routes.js';
-// import followRoutes from './routes/follow.routes.js';
-// import notificationRoutes from './routes/notification.routes.js';
-// import messageRoutes from './routes/message.routes.js';
-// import conversationRoutes from './routes/conversation.routes.js';
 
 // User routes
 app.use('/api/v1/users', userRoutes);
