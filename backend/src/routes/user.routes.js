@@ -15,7 +15,7 @@ router.route('/update-user-profile').put(verifyJWT, userController.updateProfile
 router.route('/delete-user').delete(verifyJWT, userController.deleteUser);
 router.route('/get-user-by-id/:id').get(verifyJWT, userController.getUserById);
 router.route('/change-password').put(verifyJWT, userController.changePassword);
-router.route('/change-profile-picture').put(verifyJWT, upload.fields([
+router.route('/change-profile-picture').put(verifyJWT, upload.single([
     {
         name: "profilePicture",
         maxCount: 1

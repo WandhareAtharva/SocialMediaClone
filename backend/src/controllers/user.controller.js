@@ -3,10 +3,11 @@ import jwt from "jsonwebtoken";
 import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import uploadOnCloudinary from "../utils/cloudinary.js";
 
 const userController = {
 
-    generateAuthandRefreshToken: async (userId) => {
+    generateAuthAndRefreshToken: async (userId) => {
         try {
             const user = await User.findById(userId);
             const AuthToken = user.generateAuthToken();
@@ -85,7 +86,7 @@ const userController = {
         }
 
         // Generate token
-        const { AuthToken, RefreshToken } = await userController.generateAuthandRefreshToken(user._id);
+        const { AuthToken, RefreshToken } = await userController.generateAuthAndRefreshToken(user._id);
         const LoggedInUser = await User.findById(user._id).select("-password -refreshToken");
 
         const options = {
@@ -235,18 +236,22 @@ const userController = {
             throw new ApiError(404, "User not found!!!");
         }
 
-        const { profilePicture } = req.body;
-        if (!profilePicture) {
+        const profilePicturePath = req.file?.profilePicture[0]?.path;
+        if (!profilePicturePath) {
             throw new ApiError(400, "Profile Picture is required");
         }
 
-        user.setProfilePicture(profilePicture);
+        const profilePicture = await uploadOnCloudinary(profilePicturePath);
+        if (!profilePicture) {
+            throw new ApiError(500, "Something went wrong while uploading profile picture on cloudinary!");
+        }
+
+        user.setProfilePicture(profilePicture.url);
         const updatedUser = await User.findById(user._id).select("-password -refreshToken");
 
         const response = res.status(200).json(new ApiResponse(200, updatedUser, "Profile Picture changed successfully"));
         console.log('Profile Picture changed successfully!!!');
         return response;
-
     }),
 
     // Refresh Token
@@ -267,7 +272,7 @@ const userController = {
                 throw new ApiError(401, "Refresh Token is expired or Used!");
             }
 
-            const { newAuthToken, newRefreshToken } = await userController.generateAuthandRefreshToken(user._id);
+            const { newAuthToken, newRefreshToken } = await userController.generateAuthAndRefreshToken(user._id);
             const LoggedInUser = await User.findById(user._id).select("-password -refreshToken");
 
             const options = {
