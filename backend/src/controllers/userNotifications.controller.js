@@ -18,11 +18,34 @@ const userNotificationsController = {
         if ([emailNotifications, pushNotifications, notificationMessages].every(setting => setting !== (true || false))) {
             throw ApiError(400, 'Invalid Notification Settings');
         }
-        UserNotifications.emailNotifications = emailNotifications || UserNotifications.emailNotifications;
-        UserNotifications.pushNotifications = pushNotifications || UserNotifications.pushNotifications;
-        UserNotifications.notificationMessages = notificationMessages || UserNotifications.notificationMessages;
+        if (emailNotifications === true) UserNotifications.emailNotificationsOn()
+        else UserNotifications.emailNotificationsOff();
+        if (pushNotifications === true) UserNotifications.pushNotificationsOn()
+        else UserNotifications.pushNotificationsOff();
+        if (notificationMessages === true) UserNotifications.notificationMessagesOn()
+        else UserNotifications.notificationMessagesOff();
+
         await UserNotifications.save();
-        return res.status(200).json(new ApiResponse(200, notifications, 'Notifications Updated'));
+        return res.status(200).json(new ApiResponse(200, notifications, 'Notifications Settings Updated'));
+    }),
+
+    createNotification: asyncHandler(async (req, res, next) => {
+        const { message, link } = req.body;
+
+        // Validate input
+        if (!message || !link) {
+            throw new ApiError(400, 'Message and link are required');
+        }
+
+        const userNotifications = await UserNotifications.findOne({ user: req.user._id });
+        if (!userNotifications) {
+            return next(new ApiError(404, 'User Notifications not found'));
+        }
+
+        userNotifications.notifications.push({ message, link });
+        await userNotifications.save();
+
+        return res.status(201).json(new ApiResponse(201, userNotifications, 'Notification Created'));
     }),
 };
 
