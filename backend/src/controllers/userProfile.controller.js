@@ -1,12 +1,8 @@
 console.log('Loaded: userProfile.controller.js File');
 import { asyncHandler } from "../utils/asyncHandler.js";
-import jwt from "jsonwebtoken";
-import { User } from "../models/user.model.js";
 import { UserProfile } from "../models/userProfile.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import { uploadOnCloudinary, deleteFromCloudinary } from "../utils/cloudinary.js";
-import { get } from "mongoose";
 
 const userProfileController = {
 
