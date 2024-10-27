@@ -38,7 +38,7 @@ const userSchema = new mongoose.Schema(
         },
         active: {
             type: Boolean,
-            default: true,
+            default: false,
         },
         profilePicture: {
             type: String
@@ -65,6 +65,16 @@ userSchema.pre('save', async function (next) {
 
 userSchema.methods.lastLoginUpdate = async function () {
     this.lastLogin = Date.now();
+    await this.save();
+}
+
+userSchema.methods.StatusUpdate = async function (status) {
+    this.active = status;
+    await this.save();
+}
+
+userSchema.methods.setProfilePicture = async function (profilePicture) {
+    this.profilePicture = profilePicture;
     await this.save();
 }
 
