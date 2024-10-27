@@ -7,6 +7,11 @@ const userProfileSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    fullName: {
+        type: String,
+        trim: true,
+        index: true,
+    },
     description: {
         type: String,
         trim: true,
