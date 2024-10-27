@@ -165,14 +165,13 @@ const userController = {
             throw new ApiError(404, "User not found!!!");
         }
 
-        const { username, email, password } = req.body;
-        if ([username, email, password].includes('')) {
+        const { username, email } = req.body;
+        if ([username, email].includes('')) {
             throw new ApiError(400, "All fields are required");
         }
 
         user.username = username || user.username;
         user.email = email || user.email;
-        user.password = password || user.password;
 
         await user.save();
         const updatedUser = await User.findById(user._id).select("-password -refreshToken");
