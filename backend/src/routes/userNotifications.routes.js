@@ -7,6 +7,7 @@ const router = Router();
 
 router.route('/notifications')
     .get(verifyJWT, userNotificationsController.getNotifications)
-    .put(verifyJWT, userNotificationsController.updateNotificationsSettings);
+    .patch(verifyJWT, userNotificationsController.updateNotificationsSettings)
+    .post(verifyJWT, userNotificationsController.createNotification)
 
 export default router;
