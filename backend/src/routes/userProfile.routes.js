@@ -6,7 +6,10 @@ import { upload } from '../middleware/multer.middleware.js';
 
 const router = Router();
 
+router.route('/user-profile/:id').get(userProfileController.getUserProfile);
+
 // Secure Routes
+router.route('/get-user-profile').get(verifyJWT, userProfileController.getUserProfile);
 router.route('/update-user-profile').put(verifyJWT, userProfileController.updateUserProfile);
 
 export default router;
