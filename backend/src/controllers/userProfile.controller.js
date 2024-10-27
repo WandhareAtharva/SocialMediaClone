@@ -11,7 +11,12 @@ import { get } from "mongoose";
 const userProfileController = {
 
     getUserProfile: asyncHandler(async (req, res) => {
-        const userProfile = await UserProfile.findOne({ user: req.user._id });
+        let userProfile;
+        if (req.params.id) {
+            userProfile = await UserProfile.findOne({ user: req.params.id });
+        } else {
+            userProfile = await UserProfile.findOne({ user: req.user._id });
+        }
         if (!userProfile) {
             return next(new ApiError(404, "User Profile not found"));
         }
