@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import uploadOnCloudinary from "../utils/cloudinary.js";
+import { uploadOnCloudinary, deleteFromCloudinary } from "../utils/cloudinary.js";
 
 const userController = {
 
@@ -12,7 +12,7 @@ const userController = {
             const user = await User.findById(userId);
             const AuthToken = user.generateAuthToken();
             const RefreshToken = user.generateRefreshToken();
-            console.log(`AuthToken: ${AuthToken}\nRefreshToken: ${RefreshToken}`);
+            // console.log(`AuthToken: ${AuthToken}\nRefreshToken: ${RefreshToken}`);
 
             user.refreshToken = RefreshToken;
             await user.save({ validateBeforeSave: false });
@@ -67,7 +67,7 @@ const userController = {
     // Login user
     login: asyncHandler(async (req, res) => {
         const { email, username, password } = req.body;
-        console.log(`email: ${email}\nusername: ${username}\npassword: ${password}`);
+        // console.log(`email: ${email}\nusername: ${username}\npassword: ${password}`);
 
         if ([email, username, password].includes('')) {
             throw new ApiError(400, "All fields are required");
@@ -110,8 +110,8 @@ const userController = {
                     "User logged in successfully"
                 )
             )
-        user.lastLoginUpdate();
-        user.StatusUpdate(true);
+        // user.lastLoginUpdate();
+        // user.StatusUpdate(true);
 
         console.log('User logged in successfully!!!');
         return response;
@@ -236,7 +236,8 @@ const userController = {
             throw new ApiError(404, "User not found!!!");
         }
 
-        const profilePicturePath = req.file?.profilePicture[0]?.path;
+        const profilePicturePath = req.file.path;
+        // console.log(`profilePicturePath: ${profilePicturePath}`);
         if (!profilePicturePath) {
             throw new ApiError(400, "Profile Picture is required");
         }
@@ -245,12 +246,32 @@ const userController = {
         if (!profilePicture) {
             throw new ApiError(500, "Something went wrong while uploading profile picture on cloudinary!");
         }
-
-        user.setProfilePicture(profilePicture.url);
+        if (user.profilePicture !== "") {
+            await deleteFromCloudinary(user.profilePicture);
+            await user.removeProfilePicture();
+        }
+        await user.setProfilePicture(profilePicture.url);
         const updatedUser = await User.findById(user._id).select("-password -refreshToken");
 
         const response = res.status(200).json(new ApiResponse(200, updatedUser, "Profile Picture changed successfully"));
         console.log('Profile Picture changed successfully!!!');
+        return response;
+    }),
+
+    removeProfilePicture: asyncHandler(async (req, res) => {
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            throw new ApiError(404, "User not found!!!");
+        }
+        if (!user.profilePicture) {
+            throw new ApiError(400, "Profile Picture not found!!!");
+        }
+        await deleteFromCloudinary(user.profilePicture);
+        user.removeProfilePicture();
+        const updatedUser = await User.findById(user._id).select("-password -refreshToken");
+
+        const response = res.status(200).json(new ApiResponse(200, updatedUser, "Profile Picture removed successfully"));
+        console.log('Profile Picture removed successfully!!!');
         return response;
     }),
 
