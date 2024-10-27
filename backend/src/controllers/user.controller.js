@@ -111,7 +111,8 @@ const userController = {
                     "User logged in successfully"
                 )
             )
-        // user.lastLoginUpdate();
+
+        user.lastLoginUpdate();
         // user.StatusUpdate(true);
 
         console.log('User logged in successfully!!!');
