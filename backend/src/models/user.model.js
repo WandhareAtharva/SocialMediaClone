@@ -67,6 +67,7 @@ userSchema.pre('save', async function (next) {
 
 userSchema.methods.lastLoginUpdate = async function () {
     this.lastLogin = Date.now();
+    this.active = true;
     await this.save();
 }
 
