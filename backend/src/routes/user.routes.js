@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import userController from '../controllers/user.controller.js';
 import { verifyJWT } from '../middleware/auth.middleware.js';
+import { upload } from '../middleware/multer.middleware.js';
 
 const router = Router();
 
@@ -15,12 +16,9 @@ router.route('/update-user-profile').put(verifyJWT, userController.updateProfile
 router.route('/delete-user').delete(verifyJWT, userController.deleteUser);
 router.route('/get-user-by-id/:id').get(verifyJWT, userController.getUserById);
 router.route('/change-password').put(verifyJWT, userController.changePassword);
-router.route('/change-profile-picture').put(verifyJWT, upload.single([
-    {
-        name: "profilePicture",
-        maxCount: 1
-    }
-]), userController.changeProfilePicture);
+router.route('/profile-picture')
+    .put(verifyJWT, upload.single('profilePicture'), userController.changeProfilePicture)
+    .delete(verifyJWT, upload.single('profilePicture'), userController.removeProfilePicture);
 router.route('/refresh-token').post(userController.refreshAuthToken);
 
 export default router;
