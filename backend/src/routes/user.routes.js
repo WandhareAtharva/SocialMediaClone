@@ -19,7 +19,7 @@ router.route('/get-user-by-id/:id').get(verifyJWT, userController.getUserById);
 router.route('/change-password').put(verifyJWT, userController.changePassword);
 router.route('/profile-picture')
     .put(verifyJWT, upload.single('profilePicture'), userController.changeProfilePicture)
-    .delete(verifyJWT, upload.single('profilePicture'), userController.removeProfilePicture);
+    .delete(verifyJWT, userController.removeProfilePicture);
 router.route('/refresh-token').post(userController.refreshAuthToken);
 
 export default router;
