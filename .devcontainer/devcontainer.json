@@ -1,0 +1,20 @@
+{
+    "name": "Node.js & JavaScript",
+    "image": "mcr.microsoft.com/vscode/devcontainers/javascript-node:0-14",
+    "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+    },
+    "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "s3gf4ult.monokai-vibrant",
+        "rangav.vscode-thunder-client",
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+    ],
+    "postCreateCommand": "npm install",
+    "forwardPorts": [3000],
+    "mounts": [
+        "source=${localWorkspaceFolder}/public/temp,target=/workspace/public/temp,type=bind"
+    ]
+}
