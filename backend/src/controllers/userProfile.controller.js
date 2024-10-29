@@ -7,12 +7,16 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 const userProfileController = {
 
     getUserProfile: asyncHandler(async (req, res) => {
-        let userProfile;
-        if (req.params.id) {
-            userProfile = await UserProfile.findOne({ user: req.params.id });
-        } else {
-            userProfile = await UserProfile.findOne({ user: req.user._id });
+        let userProfile = await UserProfile.findOne({ user: req.user._id });
+        if (!userProfile) {
+            return next(new ApiError(404, "User Profile not found"));
         }
+        const response = res.status(200).json(new ApiResponse(200, userProfile, "User Profile"));
+        return response;
+    }),
+
+    getUserProfileById: asyncHandler(async (req, res) => {
+        let userProfile = await UserProfile.findOne({ user: req.params.id });
         if (!userProfile) {
             return next(new ApiError(404, "User Profile not found"));
         }
