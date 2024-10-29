@@ -6,11 +6,11 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 
 const userNotificationsController = {
     getNotifications: asyncHandler(async (req, res, next) => {
-        const notifications = await UserNotifications.findOne({ user: req.user._id }).select('notifications');
-        if (!notifications) {
+        const userNotifications = await UserNotifications.findOne({ user: req.user._id });
+        if (!userNotifications) {
             return next(ApiError.notFound('No Notifications Found'));
         }
-        return res.status(200).json(new ApiResponse(200, notifications, 'Notifications Fetched'));
+        return res.status(200).json(new ApiResponse(200, userNotifications, 'All User Notifications and Settings Fetched'));
     }),
 
     updateNotificationsSettings: asyncHandler(async (req, res, next) => {
