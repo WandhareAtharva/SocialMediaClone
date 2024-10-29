@@ -17,6 +17,7 @@ const postViewController = {
         const postView = await PostViews.findOne({ tweetId: req.params.tweetId });
         if (postView) {
             postView.viewCount += 1;
+            postView.userId.push(req.user._id);
             await postView.save();
             return res.status(201).json(new ApiResponse(201, postView, "PostView updated successfully"));
         } else {
@@ -30,6 +31,7 @@ const postViewController = {
             throw new ApiError(404, 'PostView not found while deleting PostView');
         }
         postView.viewCount -= 1;
+        postView.userId.pull(req.user._id);
         await postView.save();
         return res.status(200).json(new ApiResponse(200, postView, "PostView deleted successfully"));
     })
