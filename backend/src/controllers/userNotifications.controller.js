@@ -38,11 +38,14 @@ const userNotificationsController = {
         }
 
         const userNotifications = await UserNotifications.findOne({ user: req.user._id });
+
+        const notificationId = 'Note-' + req.user.username + Date.now() + Math.floor(Math.random() * 1000);
+
         if (!userNotifications) {
             return next(new ApiError(404, 'User Notifications not found'));
         }
 
-        userNotifications.notifications.push({ message, link });
+        userNotifications.notifications.push({ notificationId, message, link });
         await userNotifications.save();
 
         return res.status(201).json(new ApiResponse(201, userNotifications, 'Notification Created'));
