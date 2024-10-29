@@ -25,6 +25,10 @@ const userNotificationsSchema = new mongoose.Schema({
     },
     notifications: [
         {
+            notificationId: {
+                type: String,
+                required: true,
+            },
             message: {
                 type: String,
                 required: true,
