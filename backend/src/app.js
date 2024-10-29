@@ -20,11 +20,13 @@ import userRoutes from './routes/user.routes.js';
 import userProfileRoutes from './routes/userProfile.routes.js';
 import userNotifications from './routes/userNotifications.routes.js';
 import userSettings from './routes/userSettings.routes.js';
+import tweetRoutes from './routes/tweet.router.js';
 
 // User routes
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/userProfile', userProfileRoutes);
 app.use('/api/v1/userNotifications', userNotifications);
 app.use('/api/v1/userSettings', userSettings);
+app.use('/api/v1/tweet', tweetRoutes);
 
 export default app;
