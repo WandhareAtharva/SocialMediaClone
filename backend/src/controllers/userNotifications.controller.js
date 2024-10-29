@@ -39,7 +39,7 @@ const userNotificationsController = {
 
         const userNotifications = await UserNotifications.findOne({ user: req.user._id });
 
-        const notificationId = 'Note-' + req.user.username + Date.now() + Math.floor(Math.random() * 1000);
+        const notificationId = 'dbs-' + req.user.username.filter((_, i) => i < 4) + Date.now() + Math.floor(Math.random() * 1000);
 
         if (!userNotifications) {
             return next(new ApiError(404, 'User Notifications not found'));
