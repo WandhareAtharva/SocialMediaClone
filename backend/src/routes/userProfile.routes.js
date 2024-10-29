@@ -12,4 +12,6 @@ router.route('/')
     .get(verifyJWT, userProfileController.getUserProfile)
     .put(verifyJWT, userProfileController.updateUserProfile);
 
+router.route('/:id').get(verifyJWT, userProfileController.getUserProfileById);
+
 export default router;
