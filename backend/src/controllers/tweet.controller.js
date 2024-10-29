@@ -3,6 +3,7 @@ import { asyncHandler } from "../utils/asyncHandler";
 import { ApiResponse } from "../utils/ApiResponse";
 import { ApiError } from "../utils/ApiError";
 import Tweet from "../models/tweet.model";
+import PostViews from "../models/postViews.model";
 
 const tweetController = {
 
@@ -58,6 +59,8 @@ const tweetController = {
         if (!createdTweet) {
             throw new ApiError(500, 'Something went wrong while creating this tweet');
         }
+        const PostViewsTab = await PostViews.create({ tweetId: createdTweet._id });
+        if (!PostViewsTab) throw new ApiError(500, 'Something went wrong while creating this tweet\'s views table');
 
         const response = res.status(201).json(new ApiResponse(201, createdTweet, 'Tweet created successfully'));
         console.log('Tweet created successfully');
@@ -119,6 +122,9 @@ const tweetController = {
             throw new ApiError(500, 'Something went wrong while creating this tweet');
         }
 
+        const PostViewsTab = await PostViews.create({ tweetId: createdTweet._id });
+        if (!PostViewsTab) throw new ApiError(500, 'Something went wrong while creating this tweet\'s views table');
+
         const response = res.status(201).json(new ApiResponse(201, createdTweet, 'Tweet created successfully'));
         console.log('Reply Tweet to another Tweet created successfully');
         return response;
@@ -140,6 +146,9 @@ const tweetController = {
         if (!createdTweet) {
             throw new ApiError(500, 'Something went wrong while creating this tweet');
         }
+
+        const PostViewsTab = await PostViews.create({ tweetId: createdTweet._id });
+        if (!PostViewsTab) throw new ApiError(500, 'Something went wrong while creating this tweet\'s views table');
 
         const response = res.status(201).json(new ApiResponse(201, createdTweet, 'Tweet created successfully'));
         console.log('Reply Tweet to User created successfully');
@@ -163,6 +172,9 @@ const tweetController = {
         if (!createdRetweet) {
             throw new ApiError(500, 'Something went wrong while creating this retweet');
         }
+
+        const PostViewsTab = await PostViews.create({ tweetId: createdTweet._id });
+        if (!PostViewsTab) throw new ApiError(500, 'Something went wrong while creating this tweet\'s views table');
 
         const response = res.status(201).json(new ApiResponse(201, createdRetweet, 'Retweet created successfully'));
         console.log('Retweet created successfully');
