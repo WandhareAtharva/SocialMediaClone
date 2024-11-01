@@ -5,6 +5,7 @@ import { ApiError } from "../utils/ApiError";
 import Tweet from "../models/tweet.model";
 import PostViews from "../models/postViews.model";
 import PostLikes from "../models/postLikes.model";
+import PostComments from "../models/postComments.model";
 
 const tweetController = {
 
@@ -65,6 +66,9 @@ const tweetController = {
 
         const PostLikesTab = await PostLikes.create({ tweetId: createdTweet._id });
         if (!PostLikesTab) throw new ApiError(500, 'Something went wrong while creating this tweet\'s likes table');
+
+        const PostCommentsTab = await PostComments.create({ tweetId: createdTweet._id });
+        if (!PostCommentsTab) throw new ApiError(500, 'Something went wrong while creating this tweet\'s comments table');
 
         const response = res.status(201).json(new ApiResponse(201, createdTweet, 'Tweet created successfully'));
         console.log('Tweet created successfully');
