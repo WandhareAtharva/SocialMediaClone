@@ -3,7 +3,6 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
-
 const app = express();
 
 app.use(cors({
@@ -21,6 +20,8 @@ import userProfileRoutes from './routes/userProfile.routes.js';
 import userNotifications from './routes/userNotifications.routes.js';
 import userSettings from './routes/userSettings.routes.js';
 import tweetRoutes from './routes/tweet.router.js';
+import postLikes from './routes/postLikes.routes.js';
+import postViews from './routes/postViews.routes.js';
 
 // User routes
 app.use('/api/v1/users', userRoutes);
@@ -28,5 +29,7 @@ app.use('/api/v1/userProfile', userProfileRoutes);
 app.use('/api/v1/userNotifications', userNotifications);
 app.use('/api/v1/userSettings', userSettings);
 app.use('/api/v1/tweet', tweetRoutes);
+app.use('/api/v1/postLikes', postLikes);
+app.use('/api/v1/postViews', postViews);
 
 export default app;
