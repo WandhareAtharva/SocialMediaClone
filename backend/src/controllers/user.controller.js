@@ -8,6 +8,8 @@ import userSettings from "../models/userSettings.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { uploadOnCloudinary, deleteFromCloudinary } from "../utils/cloudinary.js";
+import Favorites from "../models/favorites.model.js";
+import FollowedRelationships from "../models/followedRelationships.model.js";
 
 const userController = {
 
@@ -55,7 +57,7 @@ const userController = {
             throw new ApiError(400, "User already exists");
         }
 
-        // Create new user 
+        // Create new user
         const user = await User.create({ username, email, password });
         const createdUser = await User.findById(user._id).select("-password -refreshToken");
         if (!createdUser) {
@@ -66,6 +68,8 @@ const userController = {
         await UserProfile.create({ user: createdUser });
         await userNotifications.create({ user: createdUser });
         await userSettings.create({ user: createdUser });
+        await Favorites.create({ userId: createdUser });
+        await FollowedRelationships.create({ userId: createdUser });
 
         // Send response
         const response = res.status(200).json(new ApiResponse(200, createdUser, "User created successfully"));
