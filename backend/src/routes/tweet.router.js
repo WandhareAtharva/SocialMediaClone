@@ -2,6 +2,7 @@ console.log('Loaded: tweet.router.js File');
 import { Router } from "express";
 import { verifyJWT } from "../middleware/auth.middleware";
 import tweetController from "../controllers/tweet.controller";
+import upload from "../utils/multer";
 
 const router = Router();
 

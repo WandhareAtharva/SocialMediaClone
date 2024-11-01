@@ -13,7 +13,7 @@ const tweetSchema = new mongoose.Schema({
         maxlength: 300,
     },
     image: {
-        type: String,
+        type: String, // cloudinary url
         default: null,
     },
     inReplyToTweetId: {

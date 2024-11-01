@@ -2,6 +2,7 @@ console.log('Loaded: tweet.controller.js File');
 import { asyncHandler } from "../utils/asyncHandler";
 import { ApiResponse } from "../utils/ApiResponse";
 import { ApiError } from "../utils/ApiError";
+import { uploadOnCloudinary, deleteFromCloudinary } from "../utils/cloudinary";
 import Tweet from "../models/tweet.model";
 import PostViews from "../models/postViews.model";
 import PostLikes from "../models/postLikes.model";
@@ -52,9 +53,18 @@ const tweetController = {
             throw new ApiError(400, 'Text is required');
         }
 
+        const localImagePath = req.file?.image[0].path;
+        // console.log('LocalImagePath: ', localImagePath);
+        const image = await uploadOnCloudinary(localImagePath);
+        // console.log('Image: ', image);
+        if (!image) {
+            throw new ApiError(500, 'Error uploading image');
+        }
+
         const tweet = await Tweet.create({
             user: req.user._id,
             text,
+            image,
         });
 
         const createdTweet = await tweet.findOne({ _id: tweet._id });
