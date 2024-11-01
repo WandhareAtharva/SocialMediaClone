@@ -6,15 +6,11 @@ const favoritesSchema = new mongoose.Schema({
         ref: "User",
         required: true,
     },
-    tweetId: {
+    tweetId: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Tweet",
         required: true,
-    },
-    favoritedAt: {
-        type: Date,
-        default: Date.now,
-    }
+    }]
 }, { timestamps: true });
 
 favoritesSchema.index({ userId: 1, tweetId: 1 }, { unique: true });
