@@ -23,6 +23,8 @@ import tweetRoutes from './routes/tweet.router.js';
 import postLikes from './routes/postLikes.routes.js';
 import postViews from './routes/postViews.routes.js';
 import postComments from './routes/postComments.routes.js';
+import favorites from './routes/favorites.routes.js';
+import FollowedRelationships from './routes/followedRelationships.routes.js';
 
 // User routes
 app.use('/api/v1/users', userRoutes);
@@ -33,5 +35,7 @@ app.use('/api/v1/tweet', tweetRoutes);
 app.use('/api/v1/postLikes', postLikes);
 app.use('/api/v1/postViews', postViews);
 app.use('/api/v1/postComments', postComments);
+app.use('/api/v1/favorites', favorites);
+app.use('/api/v1/followedRelationships', FollowedRelationships);
 
 export default app;
