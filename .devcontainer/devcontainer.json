@@ -1,19 +1,23 @@
 {
     "name": "Node.js & JavaScript",
     "image": "mcr.microsoft.com/vscode/devcontainers/javascript-node:0-14",
-    "settings": {
-        "terminal.integrated.shell.linux": "/bin/bash"
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.shell.linux": "/bin/bash"
+            },
+            "extensions": [
+                "dbaeumer.vscode-eslint",
+                "esbenp.prettier-vscode",
+                "s3gf4ult.monokai-vibrant",
+                "rangav.vscode-thunder-client",
+                "GitHub.copilot",
+                "GitHub.copilot-chat",
+                "c0der-himel.vscode-wev-dev-extension-pack"
+            ]
+        }
     },
-    "extensions": [
-        "dbaeumer.vscode-eslint",
-        "esbenp.prettier-vscode",
-        "s3gf4ult.monokai-vibrant",
-        "rangav.vscode-thunder-client",
-        "GitHub.copilot",
-        "GitHub.copilot-chat",
-        "c0der-himel.vscode-wev-dev-extension-pack",
-    ],
-    "postCreateCommand": "npm install",
+    "postCreateCommand": "",
     "forwardPorts": [3000],
     "mounts": [
         "source=${localWorkspaceFolder}/public/temp,target=/workspace/public/temp,type=bind"
