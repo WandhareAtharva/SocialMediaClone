@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: true, limit: '16kb' }))
 app.use(express.json({ limit: '16kb' }));
 app.use(cookieParser());
 
-// Routes
+// Import Routes
 import userRoutes from './routes/user.routes.js';
 import userProfileRoutes from './routes/userProfile.routes.js';
 import userNotifications from './routes/userNotifications.routes.js';
@@ -26,7 +26,7 @@ import postComments from './routes/postComments.routes.js';
 import favorites from './routes/favorites.routes.js';
 import FollowedRelationships from './routes/followedRelationships.routes.js';
 
-// User routes
+// Use Routes
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/userProfile', userProfileRoutes);
 app.use('/api/v1/userNotifications', userNotifications);
