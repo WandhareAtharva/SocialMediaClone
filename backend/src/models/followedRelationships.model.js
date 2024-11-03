@@ -16,7 +16,11 @@ const followedRelationshipsSchema = new mongoose.Schema({
     followers: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-    }]
+    }],
+    followRequests: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+    }],
 }, { timestamps: true });
 
 followedRelationshipsSchema.index({ userId: 1, followedUserId: 1 }, { unique: true });
