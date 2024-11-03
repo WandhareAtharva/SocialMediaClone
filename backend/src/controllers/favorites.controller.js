@@ -17,6 +17,8 @@ const favoritesController = {
             return res.status(201).json(new ApiResponse(201, newFavorite, 'Favorites created and added successfully'));
         }
         favorite.tweetId.push(tweetId);
+        await favorite.save();
+        return res.status(200).json(new ApiResponse(200, favorite, 'Favorite added successfully'));
     }),
 
     remove: asyncHandler(async (req, res) => {
