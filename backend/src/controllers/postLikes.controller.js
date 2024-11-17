@@ -1,7 +1,7 @@
-import { asyncHandler } from "../utils/asyncHandler";
-import { ApiError } from "../utils/ApiError";
-import { ApiResponse } from "../utils/ApiResponse";
-import PostLike from "../models/PostLike";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { ApiError } from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import PostLike from "../models/postLikes.model.js";
 
 const postLikesController = {
     getPostLike: asyncHandler(async (req, res) => {
