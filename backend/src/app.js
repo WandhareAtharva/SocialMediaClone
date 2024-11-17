@@ -1,14 +1,29 @@
-console.log('Loaded: app.js File');
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import https from 'https';
+import { Server } from 'socket.io';
+import fs from 'fs';
 
 const app = express();
-
 app.use(cors({
     origin: process.env.CORS_ORIGIN,
     credentials: true
-}))
+}));
+
+const key = fs.readFileSync('../secureKeys/key.pem')
+const cert = fs.readFileSync('../secureKeys/cert.pem')
+
+const server = https.createServer({ key, cert }, app);
+
+const io = new Server(server, {
+    cors: {
+        origin: process.env.CORS_ORIGIN,
+        methods: ['GET', 'POST'],
+        credentials: true
+    },
+})
+
 app.use(express.static('./public'));
 app.use(express.urlencoded({ extended: true, limit: '16kb' }))
 app.use(express.json({ limit: '16kb' }));
@@ -38,4 +53,4 @@ app.use('/api/v1/postComments', postComments);
 app.use('/api/v1/favorites', favorites);
 app.use('/api/v1/followedRelationships', FollowedRelationships);
 
-export default app;
+export { app, io, server };
