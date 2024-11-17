@@ -1,4 +1,3 @@
-console.log('Loaded: PostViews.controller.js File');
 import PostViews from '../models/postViews.model.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { ApiError } from '../utils/ApiError.js';
