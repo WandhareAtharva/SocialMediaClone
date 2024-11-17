@@ -1,6 +1,5 @@
-console.log('Loaded: db.connect.js File');
 import mongoose from 'mongoose';
-import {DB_NAME} from './keys.js';
+import { DB_NAME } from './keys.js';
 
 const connectDB = async () => {
     try {
