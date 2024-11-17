@@ -1,4 +1,3 @@
-console.log('Loaded: userNotifications.controller.js File');
 import { asyncHandler } from "../utils/asyncHandler.js";
 import UserNotifications from "../models/userNotifications.model.js";
 import { ApiError } from "../utils/ApiError.js";

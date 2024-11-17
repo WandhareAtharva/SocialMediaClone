@@ -1,4 +1,3 @@
-console.log('Loaded: userProfile.controller.js File');
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { UserProfile } from "../models/userProfile.model.js";
 import { ApiError } from "../utils/ApiError.js";

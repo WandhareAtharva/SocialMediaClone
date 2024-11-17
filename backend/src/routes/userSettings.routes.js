@@ -1,4 +1,3 @@
-console.log('Loaded: userSettings.routes.js File');
 import { Router } from "express";
 import userSettingsController from "../controllers/userSettings.controller.js";
 import { verifyJWT } from '../middleware/auth.middleware.js';

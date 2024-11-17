@@ -1,4 +1,3 @@
-console.log('Loaded: user.model.js File');
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';

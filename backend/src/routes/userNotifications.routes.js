@@ -1,4 +1,3 @@
-console.log('Loaded: userNotifications.routes.js File');
 import { Router } from 'express';
 import userNotificationsController from '../controllers/userNotifications.controller.js';
 import { verifyJWT } from '../middleware/auth.middleware.js';

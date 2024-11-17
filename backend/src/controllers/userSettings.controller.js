@@ -1,4 +1,3 @@
-console.log('Loaded: userSettings.controller.js File');
 import { asyncHandler } from "../utils/asyncHandler.js";
 import UserSettings from "../models/userSettings.model.js";
 import { ApiError } from "../utils/ApiError.js";

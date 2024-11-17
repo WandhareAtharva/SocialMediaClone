@@ -59,4 +59,4 @@ tweetSchema.methods.isTweetOwner = async function (userId) {
     return this.user.toString() === userId;
 }
 
-export const Tweet = mongoose.model("Tweet", tweetSchema);
+export default mongoose.model("Tweet", tweetSchema);

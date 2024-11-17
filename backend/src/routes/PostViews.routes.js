@@ -1,7 +1,6 @@
-console.log('Loaded: PostViews.routes.js File');
 import { Router } from 'express';
-import { verifyJWT } from '../middleware/auth.middleware';
-import postViewController from '../controllers/postViews.controller';
+import { verifyJWT } from '../middleware/auth.middleware.js';
+import postViewController from '../controllers/postViews.controller.js';
 
 const router = Router();
 

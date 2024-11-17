@@ -1,4 +1,3 @@
-console.log('Loaded: auth.middleware.js File');
 import jwt from "jsonwebtoken";
 import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";

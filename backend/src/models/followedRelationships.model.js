@@ -1,6 +1,4 @@
 import mongoose from "mongoose";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
 
 const followedRelationshipsSchema = new mongoose.Schema({
     userId: {

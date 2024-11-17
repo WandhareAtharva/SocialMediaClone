@@ -1,6 +1,5 @@
-console.log('Loaded: PostLikes.routes.js File');
-import { verifyJWT } from "../middleware/auth.middleware";
 import { Router } from "express";
+import { verifyJWT } from "../middleware/auth.middleware.js";
 import postLikesController from "../controllers/postLikes.controller.js";
 
 const router = Router();
