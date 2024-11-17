@@ -1,12 +1,11 @@
-console.log('Loaded: tweet.controller.js File');
-import { asyncHandler } from "../utils/asyncHandler";
-import { ApiResponse } from "../utils/ApiResponse";
-import { ApiError } from "../utils/ApiError";
-import { uploadOnCloudinary, deleteFromCloudinary } from "../utils/cloudinary";
-import Tweet from "../models/tweet.model";
-import PostViews from "../models/postViews.model";
-import PostLikes from "../models/postLikes.model";
-import PostComments from "../models/postComments.model";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { ApiError } from "../utils/ApiError.js";
+import { uploadOnCloudinary, deleteFromCloudinary } from "../utils/cloudinary.js";
+import Tweet from "../models/tweet.model.js";
+import PostViews from "../models/postViews.model.js";
+import PostLikes from "../models/postLikes.model.js";
+import PostComments from "../models/postComments.model.js";
 
 const tweetController = {
 
