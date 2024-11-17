@@ -1,0 +1,23 @@
+{
+  "name": "socialmediaclone",
+  "version": "1.0.0",
+  "description": "A social media platform to share all types of media content to your friends (or even the world if you want it).",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "start:backend": "cd backend && npm run dev",
+    "start:frontend": "cd frontend && npm run dev",
+    "setup": "concurrently \"npm run install:backend\" \"npm run install:frontend\"",
+    "install:backend": "cd ./backend/ && npm i",
+    "install:frontend": "cd ./frontend/ && npm i",
+    "clean": "concurrently \"npm run remove:backend\" \"npm run remove:frontend\"",
+    "remove:backend": "cd ./backend/ && npm remove",
+    "remove:frontend": "cd ./frontend/ && npm remove"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}
