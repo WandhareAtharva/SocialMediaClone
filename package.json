@@ -12,7 +12,13 @@
     "install:frontend": "cd ./frontend/ && npm i",
     "clean": "concurrently \"npm run remove:backend\" \"npm run remove:frontend\"",
     "remove:backend": "cd ./backend/ && npm remove",
-    "remove:frontend": "cd ./frontend/ && npm remove"
+    "remove:frontend": "cd ./frontend/ && npm remove",
+    "force-install:backend": "cd ./backend/ && npm i --force",
+    "force-install:frontend": "cd ./frontend/ && npm i --force",
+    "force-remove:backend": "cd ./backend/ && npm remove --force",
+    "force-remove:frontend": "cd ./frontend/ && npm remove --force",
+    "force-install": "concurrently \"npm run force-install:backend\" \"npm run force-install:frontend\"",
+    "force-clean": "concurrently \"npm run force-remove:backend\" \"npm run force-remove:frontend\""
   },
   "keywords": [],
   "author": "",
