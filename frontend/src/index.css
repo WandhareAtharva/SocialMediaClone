@@ -186,3 +186,8 @@ button:focus-visible {
   font-weight: 900;
   font-style: italic;
 }
+
+/* Custom CSS */
+.Border {
+  border: 2px solid #61dafb;
+}
