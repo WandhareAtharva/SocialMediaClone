@@ -4,9 +4,15 @@ import jwt from 'jsonwebtoken';
 
 const userSchema = new mongoose.Schema(
     {
+        googleId: {
+            type: String,
+        },
+        name: {
+            type: String,
+            required: true
+        },
         username: {
             type: String,
-            required: true,
             trim: true,
             unique: true,
             minlength: 3,
@@ -24,7 +30,6 @@ const userSchema = new mongoose.Schema(
         },
         password: {
             type: String,
-            required: true,
             trim: true,
             minlength: 8,
         },
@@ -35,7 +40,7 @@ const userSchema = new mongoose.Schema(
             type: Boolean,
             default: false,
         },
-        profilePicture: {
+        avatar: {
             type: String,
             default: ""
         },
@@ -70,13 +75,13 @@ userSchema.methods.StatusUpdate = async function (status) {
     await this.save();
 }
 
-userSchema.methods.setProfilePicture = async function (profilePicture) {
-    this.profilePicture = profilePicture;
+userSchema.methods.setAvatar = async function (avatar) {
+    this.avatar = avatar;
     await this.save();
 }
 
-userSchema.methods.removeProfilePicture = async function () {
-    this.profilePicture = "";
+userSchema.methods.removeAvatar = async function () {
+    this.avatar = "";
     await this.save();
 }
 
