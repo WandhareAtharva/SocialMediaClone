@@ -1,4 +1,4 @@
-import {Router} from 'express';
+import { Router } from 'express';
 import followedRelationshipsController from '../controllers/followedRelationships.controller.js';
 import { verifyJWT } from '../middleware/auth.middleware.js';
 
