@@ -31,7 +31,7 @@ const userController = {
     getAllUsers: asyncHandler(async (req, res) => {
         const users = await User.find();
         if (!users) {
-            throw new ApiError(404, "No users found!!!");
+            return res.status(200).json(200, {}, 'No Users Found!!');
         }
 
         const response = res.status(200).json(new ApiResponse(200, users, "All users fetched successfully"));
